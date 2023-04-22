@@ -3,11 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hotel_booking/theme/color.dart';
 
 class BottomBarItem extends StatelessWidget {
-  const BottomBarItem(this.icon,
-      {this.onTap,
-      this.color = Colors.grey,
-      this.activeColor = primary,
-      this.isActive = false});
+  const BottomBarItem(
+    this.icon, {
+    this.onTap,
+    this.color = Colors.grey,
+    this.activeColor = AppColor.primary,
+    this.isActive = false,
+  });
+
   final String icon;
   final Color color;
   final Color activeColor;
@@ -24,11 +27,11 @@ class BottomBarItem extends StatelessWidget {
         padding: EdgeInsets.all(7),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: bottomBarColor,
+          color: AppColor.bottomBarColor,
           boxShadow: [
             if (isActive)
               BoxShadow(
-                color: shadowColor.withOpacity(0.1),
+                color: AppColor.shadowColor.withOpacity(0.1),
                 spreadRadius: 2,
                 blurRadius: 2,
                 offset: Offset(0, 0), // changes position of shadow
@@ -37,7 +40,7 @@ class BottomBarItem extends StatelessWidget {
         ),
         child: SvgPicture.asset(
           icon,
-          color: isActive ? primary : color,
+          color: isActive ? AppColor.primary : color,
           width: 20,
           height: 20,
         ),

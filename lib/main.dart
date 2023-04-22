@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Hotel Booking',
       theme: ThemeData(
-        primaryColor: primary,
+        primaryColor: AppColor.primary,
       ),
-      home: RootApp(),
+      home: const RootApp(),
     );
   }
 }

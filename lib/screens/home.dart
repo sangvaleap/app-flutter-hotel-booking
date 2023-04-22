@@ -18,136 +18,122 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appBgColor,
+      backgroundColor: AppColor.appBgColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: appBarColor,
+            backgroundColor: AppColor.appBarColor,
             pinned: true,
             snap: true,
             floating: true,
-            title: getAppBar(),
+            title: _builAppBar(),
           ),
           SliverToBoxAdapter(
-            child: buildBody(),
+            child: _buildBody(),
           ),
         ],
       ),
     );
   }
 
-  Widget getAppBar() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.place_outlined,
-                    color: labelColor,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 3,
-                  ),
-                  Text(
-                    "Phnom Penh",
-                    style: TextStyle(
-                      color: darker,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-          Spacer(),
-          NotificationBox(
-            notifiedNumber: 1,
-            onTap: () {},
-          )
-        ],
-      ),
-    );
-  }
-
-  buildBody() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 5, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-              child: Text(
-                "Find and Book",
-                style: TextStyle(
-                  color: labelColor,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
-              child: Text(
-                "The Best Hotel Rooms",
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                ),
-              ),
-            ),
-            getCities(),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
-              child: Text(
-                "Featured",
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
-                ),
-              ),
-            ),
-            getFeature(),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Recommended",
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: textColor),
-                  ),
-                  Text(
-                    "See all",
-                    style: TextStyle(fontSize: 14, color: darker),
-                  ),
-                ],
-              ),
-            ),
-            getRecommend(),
-          ],
+  Widget _builAppBar() {
+    return Row(
+      children: [
+        Icon(
+          Icons.place_outlined,
+          color: AppColor.labelColor,
+          size: 20,
         ),
+        const SizedBox(
+          width: 3,
+        ),
+        Text(
+          "Phnom Penh",
+          style: TextStyle(
+            color: AppColor.darker,
+            fontSize: 13,
+          ),
+        ),
+        const Spacer(),
+        NotificationBox(
+          notifiedNumber: 1,
+        )
+      ],
+    );
+  }
+
+  _buildBody() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(top: 5, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+            child: Text(
+              "Find and Book",
+              style: TextStyle(
+                color: AppColor.labelColor,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: Text(
+              "The Best Hotel Rooms",
+              style: TextStyle(
+                color: AppColor.textColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 22,
+              ),
+            ),
+          ),
+          _buildCities(),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: Text(
+              "Featured",
+              style: TextStyle(
+                color: AppColor.textColor,
+                fontWeight: FontWeight.w500,
+                fontSize: 22,
+              ),
+            ),
+          ),
+          _buildFeatured(),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Recommended",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.textColor),
+                ),
+                Text(
+                  "See all",
+                  style: TextStyle(fontSize: 14, color: AppColor.darker),
+                ),
+              ],
+            ),
+          ),
+          _getRecommend(),
+        ],
       ),
     );
   }
 
-  getFeature() {
+  _buildFeatured() {
     return CarouselSlider(
       options: CarouselOptions(
         height: 300,
@@ -165,13 +151,12 @@ class _HomePageState extends State<HomePage> {
                   !features[index]["is_favorited"];
             });
           },
-          onTap: () {},
         ),
       ),
     );
   }
 
-  getRecommend() {
+  _getRecommend() {
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
       scrollDirection: Axis.horizontal,
@@ -182,7 +167,6 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 10),
             child: RecommendItem(
               data: recommends[index],
-              onTap: () {},
             ),
           ),
         ),
@@ -190,7 +174,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  getCities() {
+  _buildCities() {
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(15, 5, 0, 10),
       scrollDirection: Axis.horizontal,
@@ -201,7 +185,6 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 8),
             child: CityItem(
               data: cities[index],
-              onTap: () {},
             ),
           ),
         ),

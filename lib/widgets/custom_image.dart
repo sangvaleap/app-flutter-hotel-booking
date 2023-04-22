@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_booking/theme/color.dart';
 
 class CustomImage extends StatelessWidget {
-  CustomImage(this.image,
+  const CustomImage(this.image,
       {this.width = 100,
       this.height = 100,
       this.bgColor,
@@ -15,6 +15,7 @@ class CustomImage extends StatelessWidget {
       this.radius = 50,
       this.borderRadius,
       this.isShadow = true});
+
   final String image;
   final double width;
   final double height;
@@ -39,7 +40,7 @@ class CustomImage extends StatelessWidget {
         boxShadow: [
           if (isShadow)
             BoxShadow(
-              color: shadowColor.withOpacity(0.1),
+              color: AppColor.shadowColor.withOpacity(0.1),
               spreadRadius: 1,
               blurRadius: 1,
               offset: Offset(0, 1), // changes position of shadow
@@ -47,21 +48,25 @@ class CustomImage extends StatelessWidget {
         ],
       ),
       child: isNetwork
-          ? CachedNetworkImage(
-              imageUrl: image,
-              placeholder: (context, url) => BlankImageWidget(),
-              errorWidget: (context, url, error) => BlankImageWidget(),
-              imageBuilder: (context, imageProvider) => Container(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius ?? BorderRadius.circular(radius),
-                  image: DecorationImage(image: imageProvider, fit: fit),
-                ),
-              ),
-            )
+          ? _buildNetworkImage()
           : Image(
               image: AssetImage(image),
               fit: fit,
             ),
+    );
+  }
+
+  Widget _buildNetworkImage() {
+    return CachedNetworkImage(
+      imageUrl: image,
+      placeholder: (context, url) => BlankImageWidget(),
+      errorWidget: (context, url, error) => BlankImageWidget(),
+      imageBuilder: (context, imageProvider) => Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius ?? BorderRadius.circular(radius),
+          image: DecorationImage(image: imageProvider, fit: fit),
+        ),
+      ),
     );
   }
 }
@@ -76,16 +81,10 @@ class BlankImageWidget extends StatefulWidget {
 class _BlankImageWidgetState extends State<BlankImageWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(0),
-      child: Center(
-          child: SizedBox(
-        child: Card(
-          margin: EdgeInsets.zero,
-          clipBehavior: Clip.antiAlias,
-          elevation: 0.0,
-        ),
-      )),
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      elevation: 0.0,
     );
   }
 }

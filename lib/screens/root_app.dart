@@ -14,8 +14,8 @@ class RootApp extends StatefulWidget {
 }
 
 class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
-  int activeTabIndex = 0;
-  List barItems = [
+  int _activeTabIndex = 0;
+  final List _barItems = [
     {
       "icon": "assets/icons/home.svg",
       "page": HomePage(),
@@ -63,15 +63,15 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  animatedPage(page) {
+  _buildAnimatedPage(page) {
     return FadeTransition(child: page, opacity: _animation);
   }
 
   void onPageChanged(int index) {
-    if (index == activeTabIndex) return;
+    if (index == _activeTabIndex) return;
     _controller.reset();
     setState(() {
-      activeTabIndex = index;
+      _activeTabIndex = index;
     });
     _controller.forward();
   }
@@ -81,33 +81,41 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: appBgColor,
-        bottomNavigationBar: getBottomBar(),
-        body: getBarPage());
+      backgroundColor: AppColor.appBgColor,
+      bottomNavigationBar: _buildBottomBar(),
+      body: _buildPage(),
+    );
   }
 
-  Widget getBarPage() {
+  Widget _buildPage() {
     return IndexedStack(
-        index: activeTabIndex,
-        children: List.generate(
-            barItems.length, (index) => animatedPage(barItems[index]["page"])));
+      index: _activeTabIndex,
+      children: List.generate(
+        _barItems.length,
+        (index) => _buildAnimatedPage(_barItems[index]["page"]),
+      ),
+    );
   }
 
-  Widget getBottomBar() {
+  Widget _buildBottomBar() {
     return Container(
       height: 75,
       width: double.infinity,
       decoration: BoxDecoration(
-          color: bottomBarColor,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-          boxShadow: [
-            BoxShadow(
-                color: shadowColor.withOpacity(0.1),
-                blurRadius: 1,
-                spreadRadius: 1,
-                offset: Offset(0, 1))
-          ]),
+        color: AppColor.bottomBarColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.shadowColor.withOpacity(0.1),
+            blurRadius: 1,
+            spreadRadius: 1,
+            offset: Offset(0, 1),
+          )
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.only(
           left: 25,
@@ -117,14 +125,12 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
-            barItems.length,
+            _barItems.length,
             (index) => BottomBarItem(
-              barItems[index]["icon"],
-              isActive: activeTabIndex == index,
-              activeColor: primary,
-              onTap: () {
-                onPageChanged(index);
-              },
+              _barItems[index]["icon"],
+              isActive: _activeTabIndex == index,
+              activeColor: AppColor.primary,
+              onTap: () => onPageChanged(index),
             ),
           ),
         ),
